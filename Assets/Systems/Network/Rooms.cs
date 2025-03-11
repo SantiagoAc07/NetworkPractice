@@ -1,5 +1,6 @@
 using System;
 using Photon.Pun;
+using Photon.Realtime;
 using TMPro;
 using UnityEngine;
 
@@ -27,7 +28,7 @@ public class Rooms : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRoom(roomName);
     }
 
-    [ContextMenu("Leave")]
+    [ContextMenu("Leave Room")]
     public void LeaveRoom()
     {
         PhotonNetwork.LeaveRoom();
@@ -37,14 +38,7 @@ public class Rooms : MonoBehaviourPunCallbacks
     {
         base.OnCreatedRoom();
 
-        print("Room Created!");
-    }
-
-    public override void OnCreateRoomFailed(short returnCode, string message)
-    {
-        base.OnCreateRoomFailed(returnCode, message);
-
-        print($"Room Creation Failed!\nCode: {returnCode} Error: {message}");
+        print($"Has Created the room! Name: {roomName}");
     }
 
     public override void OnJoinedRoom()
@@ -56,6 +50,14 @@ public class Rooms : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("Game");
         
     }
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        base.OnCreateRoomFailed(returnCode, message);
+
+        print($"Room Creation Failed!\nCode: {returnCode} Error: {message}");
+    }
+
+    
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {

@@ -1,11 +1,15 @@
+using Photon.Pun;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody), typeof(PhotonView))]
 public class Movement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
 
     private Rigidbody _rb;
+    
+    private PhotonView _photonView;
     
 
     private Vector3 moveDirection;
@@ -13,11 +17,13 @@ public class Movement : MonoBehaviour
     void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _photonView = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (!_photonView.IsMine) return;
         MoveDirection();
         Move();
     }
