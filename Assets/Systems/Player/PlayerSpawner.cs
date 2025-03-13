@@ -3,54 +3,29 @@ using Photon.Pun;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    
-    [SerializeField] private float spawnHeight = 0.5f;
-    [SerializeField] private Mesh floor;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private Vector3[] spawnPositions = new Vector3[]
+    {
+        new Vector3(2.57f, 0.5f, 49.64f),
+        new Vector3(-2.57f, 0.5f, 49.64f)
+    };
+
     void Start()
     {
         SpawnPlayer();
     }
 
-    // Update is called once per frame
     private void SpawnPlayer()
     {
-        Vector3 spawnPoint = GetRandomPointOnMesh(floor);
+        int playerIndex = PhotonNetwork.CurrentRoom.PlayerCount - 1; // 0 para el primero, 1 para el segundo
 
-        spawnPoint.y = spawnHeight;
-        
-        PhotonNetwork.Instantiate("Player", spawnPoint, Quaternion.identity, 0);
-    }
-    
-    Vector3 GetRandomPointOnMesh(Mesh mesh)
-    {
-        // Get the vertices and triangles from the mesh
-        Vector3[] vertices = mesh.vertices;
-        int[] triangles = mesh.triangles;
-
-        // Pick a random triangle by selecting three random indices from the triangles array
-        int triangleIndex = Random.Range(0, triangles.Length / 3) * 3;
-
-        // Get the three vertices that form the triangle
-        Vector3 vertex1 = vertices[triangles[triangleIndex]];
-        Vector3 vertex2 = vertices[triangles[triangleIndex + 1]];
-        Vector3 vertex3 = vertices[triangles[triangleIndex + 2]];
-
-        // Use barycentric coordinates to pick a random point within the triangle
-        float r1 = Random.value;
-        float r2 = Random.value;
-
-        // Ensure the point is inside the triangle
-        if (r1 + r2 > 1)
+        if (playerIndex >= spawnPositions.Length)
         {
-            r1 = 1 - r1;
-            r2 = 1 - r2;
+            Debug.LogError("¡Error! Hay más jugadores de los permitidos en la carrera.");
+            return;
         }
 
-        // Calculate the random point inside the triangle using barycentric interpolation
-        Vector3 randomPoint = vertex1 * (1 - r1 - r2) + vertex2 * r1 + vertex3 * r2;
+        Vector3 spawnPoint = spawnPositions[playerIndex];
 
-        // Return the random point on the plane mesh
-        return randomPoint;
+        PhotonNetwork.Instantiate("Player", spawnPoint, Quaternion.identity, 0);
     }
 }
