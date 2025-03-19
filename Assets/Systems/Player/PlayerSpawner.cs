@@ -16,16 +16,16 @@ public class PlayerSpawner : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        int playerIndex = PhotonNetwork.CurrentRoom.PlayerCount - 1; // 0 para el primero, 1 para el segundo
+        if (!PhotonNetwork.InRoom) return;
 
-        if (playerIndex >= spawnPositions.Length)
-        {
-            Debug.LogError("¡Error! Hay más jugadores de los permitidos en la carrera.");
-            return;
-        }
+        // Usamos ActorNumber para asignar posiciones únicas a los jugadores
+        int playerIndex = (PhotonNetwork.LocalPlayer.ActorNumber - 1) % spawnPositions.Length;
 
         Vector3 spawnPoint = spawnPositions[playerIndex];
 
-        PhotonNetwork.Instantiate("Player", spawnPoint, Quaternion.identity, 0);
+        // Instanciamos al jugador en la red
+        GameObject player = PhotonNetwork.Instantiate("Player", spawnPoint, Quaternion.identity);
+        
+        Debug.Log($"✅ Jugador {PhotonNetwork.LocalPlayer.ActorNumber} spawneado en {spawnPoint}");
     }
 }

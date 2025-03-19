@@ -6,27 +6,44 @@ using UnityEngine;
 public class Rooms : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TMP_InputField joinInputfield, createInputfield;
-    [SerializeField] private string roomName;
+    private string joinRoomName = "";
+    private string createRoomName = "";
 
     private void Start()
     {
-        joinInputfield.onValueChanged.AddListener(text => { roomName = text; });
-        createInputfield.onValueChanged.AddListener(text => { roomName = text; });
+        joinInputfield.onValueChanged.AddListener(text => joinRoomName = text);
+        createInputfield.onValueChanged.AddListener(text => createRoomName = text);
     }
 
     [ContextMenu("Create")]
     public void CreateRoom()
     {
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 2; // Máximo 2 jugadores en la sala
+        if (string.IsNullOrEmpty(createRoomName))
+        {
+            Debug.LogError("⚠ No puedes crear una sala sin nombre.");
+            return;
+        }
 
-        PhotonNetwork.CreateRoom(roomName, roomOptions);
+        RoomOptions roomOptions = new RoomOptions
+        {
+            MaxPlayers = 4, // Incrementado para pruebas
+            EmptyRoomTtl = 5000
+        };
+
+        PhotonNetwork.CreateRoom(createRoomName, roomOptions);
     }
 
     [ContextMenu("Join")]
     public void JoinRoom()
     {
-        PhotonNetwork.JoinRoom(roomName);
+        if (string.IsNullOrEmpty(joinRoomName))
+        {
+            Debug.LogWarning("⚠ Nombre de la sala vacío. Intentando unirse a una aleatoria...");
+            PhotonNetwork.JoinRandomRoom();
+            return;
+        }
+
+        PhotonNetwork.JoinOrCreateRoom(joinRoomName, new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
     }
 
     [ContextMenu("Leave Room")]
@@ -37,32 +54,32 @@ public class Rooms : MonoBehaviourPunCallbacks
 
     public override void OnCreatedRoom()
     {
-        base.OnCreatedRoom();
-        Debug.Log($"Has creado la sala: {roomName}");
+        Debug.Log($" Sala creada: {PhotonNetwork.CurrentRoom.Name}");
     }
 
     public override void OnJoinedRoom()
     {
-        base.OnJoinedRoom();
-        Debug.Log($"Te has unido a la sala {PhotonNetwork.CurrentRoom.Name}");
+        Debug.Log($" Te has unido a la sala {PhotonNetwork.CurrentRoom.Name}");
         PhotonNetwork.LoadLevel("Game");
     }
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        base.OnCreateRoomFailed(returnCode, message);
-        Debug.LogError($"Error al crear la sala: {message}");
+        Debug.LogError($" Error al crear la sala: {message}");
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        base.OnJoinRoomFailed(returnCode, message);
-        Debug.LogError($"Error al unirse a la sala: {message}");
+        Debug.LogError($" No se pudo unir a la sala: {message}");
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        Debug.LogError($" No hay salas disponibles. {message}");
     }
 
     public override void OnLeftRoom()
     {
-        base.OnLeftRoom();
-        Debug.Log("Has salido de la sala.");
+        Debug.Log(" Has salido de la sala.");
     }
 }

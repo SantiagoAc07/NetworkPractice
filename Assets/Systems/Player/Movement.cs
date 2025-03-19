@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 public class Movement : MonoBehaviour
 {
     [SerializeField] private float speed = 5f;
+    
+    public GameObject playerCamera;
 
     private Rigidbody _rb;
     
@@ -19,14 +21,23 @@ public class Movement : MonoBehaviour
         _rb = GetComponent<Rigidbody>();
         _photonView = GetComponent<PhotonView>();
     }
+    
+    void Start()
+    {
+        if (!_photonView.IsMine)
+        {
+            playerCamera.SetActive(false); // Apagar la cámara si no es nuestro jugador
+        }
+    }
 
     // Update is called once per frame
     void Update()
     {
-        if (!_photonView.IsMine) return;
+        if (!_photonView.IsMine) return; // Solo mueve el jugador local
         MoveDirection();
         Move();
     }
+
 
     private void MoveDirection()
     {
