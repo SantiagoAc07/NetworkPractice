@@ -121,6 +121,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  jumpForce: 5
+  raycastLength: 1.1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!114 &6485695139048845794
 MonoBehaviour:
   m_ObjectHideFlags: 0
