@@ -2,18 +2,23 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Rooms : MonoBehaviourPunCallbacks
 {
     [SerializeField] private TMP_InputField joinInputfield, createInputfield;
+    [SerializeField] private GameObject loadingScreen; // Asigna el Panel de la UI en el Inspector
+
     private string joinRoomName = "";
     private string createRoomName = "";
 
     private void Start()
     {
+        PhotonNetwork.AutomaticallySyncScene = true; // Sincroniza la escena para todos
         joinInputfield.onValueChanged.AddListener(text => joinRoomName = text);
         createInputfield.onValueChanged.AddListener(text => createRoomName = text);
     }
+
 
     [ContextMenu("Create")]
     public void CreateRoom()
@@ -26,7 +31,7 @@ public class Rooms : MonoBehaviourPunCallbacks
 
         RoomOptions roomOptions = new RoomOptions
         {
-            MaxPlayers = 4, // Incrementado para pruebas
+            MaxPlayers = 2, // Solo dos jugadores para la carrera
             EmptyRoomTtl = 5000
         };
 
@@ -36,6 +41,13 @@ public class Rooms : MonoBehaviourPunCallbacks
     [ContextMenu("Join")]
     public void JoinRoom()
     {
+        if (!PhotonNetwork.InLobby)
+        {
+            Debug.LogWarning(" No estás en el lobby. Intentando unirse...");
+            PhotonNetwork.JoinLobby();
+            return;
+        }
+
         if (string.IsNullOrEmpty(joinRoomName))
         {
             Debug.LogWarning("⚠ Nombre de la sala vacío. Intentando unirse a una aleatoria...");
@@ -43,43 +55,41 @@ public class Rooms : MonoBehaviourPunCallbacks
             return;
         }
 
-        PhotonNetwork.JoinOrCreateRoom(joinRoomName, new RoomOptions { MaxPlayers = 4 }, TypedLobby.Default);
+        PhotonNetwork.JoinOrCreateRoom(joinRoomName, new RoomOptions { MaxPlayers = 2 }, TypedLobby.Default);
     }
 
-    [ContextMenu("Leave Room")]
-    public void LeaveRoom()
-    {
-        PhotonNetwork.LeaveRoom();
-    }
-
-    public override void OnCreatedRoom()
-    {
-        Debug.Log($" Sala creada: {PhotonNetwork.CurrentRoom.Name}");
-    }
 
     public override void OnJoinedRoom()
     {
         Debug.Log($" Te has unido a la sala {PhotonNetwork.CurrentRoom.Name}");
-        PhotonNetwork.LoadLevel("Game");
+
+        // Si es el primer jugador, muestra la pantalla de carga
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
+        {
+            loadingScreen.SetActive(true);
+        }
+        else
+        {
+            // Si ya hay 2 jugadores, iniciar la carrera
+            StartRace();
+        }
     }
 
-    public override void OnCreateRoomFailed(short returnCode, string message)
+    public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        Debug.LogError($" Error al crear la sala: {message}");
+        Debug.Log($"🔹 {newPlayer.NickName} ha entrado a la sala.");
+
+        // Si ya hay 2 jugadores, iniciar la carrera
+        if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
+        {
+            StartRace();
+        }
     }
 
-    public override void OnJoinRoomFailed(short returnCode, string message)
+    private void StartRace()
     {
-        Debug.LogError($" No se pudo unir a la sala: {message}");
-    }
-
-    public override void OnJoinRandomFailed(short returnCode, string message)
-    {
-        Debug.LogError($" No hay salas disponibles. {message}");
-    }
-
-    public override void OnLeftRoom()
-    {
-        Debug.Log(" Has salido de la sala.");
+        Debug.Log(" ¡La carrera va a empezar!");
+        loadingScreen.SetActive(false); // Ocultar pantalla de carga
+        PhotonNetwork.LoadLevel("Game"); // Cargar la escena de la carrera
     }
 }
