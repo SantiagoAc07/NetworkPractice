@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5227937624465034022}
   - component: {fileID: 6485695139048845794}
   m_Layer: 0
-  m_Name: Character3
+  m_Name: Player_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,18 +153,6 @@ PrefabInstance:
     - target: {fileID: 1246918758467806929, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
       propertyPath: m_Name
       value: RollingBalls_Sci-fi_1_3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4035109334116148654, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.62877
-      objectReference: {fileID: 0}
-    - target: {fileID: 4035109334116148654, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.62877
-      objectReference: {fileID: 0}
-    - target: {fileID: 4035109334116148654, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.62877
       objectReference: {fileID: 0}
     - target: {fileID: 4035109334116148654, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
       propertyPath: m_LocalPosition.x
