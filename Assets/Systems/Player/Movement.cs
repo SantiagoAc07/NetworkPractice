@@ -10,11 +10,15 @@ namespace Systems.Player
         [SerializeField] private float jumpForce = 5f;
         [SerializeField] private float raycastLength = 1.1f;
         [SerializeField] private LayerMask groundLayer;
+        
+        private bool canMove = false;
+        
 
         private Rigidbody _rb;
         private PhotonView _photonView;
         private Vector3 _moveDirection;
         private bool _isGrounded;
+        
 
         void Awake()
         {
@@ -43,9 +47,16 @@ namespace Systems.Player
             _moveDirection.y = 0;
             _moveDirection *= speed;
         }
+       
+        public void EnableMovement()
+        {
+            canMove = true; // ✅ Se activa cuando el GameManager lo ordene
+        }
 
         private void Move()
         {
+            if (!canMove) return; // 🚫 No deja moverse hasta que se active
+
             _rb.linearVelocity = new Vector3(_moveDirection.x, _rb.linearVelocity.y, _moveDirection.z);
         }
 
@@ -65,5 +76,6 @@ namespace Systems.Player
             if (_isGrounded) Debug.Log("🟢 En el suelo");
             else Debug.Log("🔴 En el aire");
         }
+
     }
 }
