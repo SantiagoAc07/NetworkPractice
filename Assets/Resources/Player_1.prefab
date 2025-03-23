@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 3461821935799543810}
   - component: {fileID: 5227937624465034022}
   - component: {fileID: 6485695139048845794}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player_1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,6 +150,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6247540711031165037}
     m_Modifications:
+    - target: {fileID: 285695866473476178, guid: 853665bfc6ac8324784ed3fc27bb7f73, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2005068138742818012, guid: 853665bfc6ac8324784ed3fc27bb7f73, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4733236456655224406, guid: 853665bfc6ac8324784ed3fc27bb7f73, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -193,6 +201,14 @@ PrefabInstance:
     - target: {fileID: 7680529403145111814, guid: 853665bfc6ac8324784ed3fc27bb7f73, type: 3}
       propertyPath: m_Name
       value: RollingBalls_Sci-fi_1_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7680529403145111814, guid: 853665bfc6ac8324784ed3fc27bb7f73, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 8693827791591122748, guid: 853665bfc6ac8324784ed3fc27bb7f73, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

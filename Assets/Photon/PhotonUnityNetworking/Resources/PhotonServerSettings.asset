@@ -40,6 +40,12 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - StartCountdown
+  - PlayerFinished
+  - DetermineWinner
+  - SetWinner
+  - ShowResult
+  - ShowResults
+  - DisplayResult
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

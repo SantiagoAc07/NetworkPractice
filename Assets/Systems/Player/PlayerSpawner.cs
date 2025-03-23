@@ -4,7 +4,7 @@ using Unity.Cinemachine;
 
 public class PlayerSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject[] playerPrefabs; // Lista de prefabs de jugadores
+    [SerializeField] private GameObject[] playerPrefabs; 
     
     private Vector3[] spawnPositions = new Vector3[]
     {
@@ -24,10 +24,10 @@ public class PlayerSpawner : MonoBehaviour
         int playerIndex = (PhotonNetwork.LocalPlayer.ActorNumber - 1) % spawnPositions.Length;
         Vector3 spawnPoint = spawnPositions[playerIndex];
 
-        // Seleccionar un prefab aleatorio
+       
         GameObject selectedPrefab = playerPrefabs[Random.Range(0, playerPrefabs.Length)];
 
-        // Instanciar en red con Photon
+       
         GameObject player = PhotonNetwork.Instantiate(selectedPrefab.name, spawnPoint, Quaternion.identity);
 
         if (player.GetComponent<PhotonView>().IsMine)

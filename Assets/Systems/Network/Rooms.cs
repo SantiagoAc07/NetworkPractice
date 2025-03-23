@@ -63,14 +63,14 @@ public class Rooms : MonoBehaviourPunCallbacks
     {
         Debug.Log($" Te has unido a la sala {PhotonNetwork.CurrentRoom.Name}");
 
-        // Si es el primer jugador, muestra la pantalla de carga
+        
         if (PhotonNetwork.CurrentRoom.PlayerCount == 1)
         {
             loadingScreen.SetActive(true);
         }
         else
         {
-            // Si ya hay 2 jugadores, iniciar la carrera
+           
             StartRace();
         }
     }
@@ -79,7 +79,7 @@ public class Rooms : MonoBehaviourPunCallbacks
     {
         Debug.Log($"🔹 {newPlayer.NickName} ha entrado a la sala.");
 
-        // Si ya hay 2 jugadores, iniciar la carrera
+        
         if (PhotonNetwork.CurrentRoom.PlayerCount == 2)
         {
             StartRace();
@@ -89,7 +89,7 @@ public class Rooms : MonoBehaviourPunCallbacks
     private void StartRace()
     {
         Debug.Log(" ¡La carrera va a empezar!");
-        loadingScreen.SetActive(false); // Ocultar pantalla de carga
-        PhotonNetwork.LoadLevel("Game"); // Cargar la escena de la carrera
+        loadingScreen.SetActive(false); 
+        PhotonNetwork.LoadLevel("Game"); 
     }
 }

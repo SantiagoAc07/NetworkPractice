@@ -12,13 +12,11 @@ namespace Systems.Player
         [SerializeField] private LayerMask groundLayer;
         
         private bool canMove = false;
-        
 
         private Rigidbody _rb;
         private PhotonView _photonView;
         private Vector3 _moveDirection;
         private bool _isGrounded;
-        
 
         void Awake()
         {
@@ -28,7 +26,7 @@ namespace Systems.Player
 
         void Update()
         {
-            if (!_photonView.IsMine) return; // Solo mueve el jugador local
+            if (!_photonView.IsMine) return; 
 
             CheckGrounded();
             MoveDirection();
@@ -47,15 +45,15 @@ namespace Systems.Player
             _moveDirection.y = 0;
             _moveDirection *= speed;
         }
-       
+
         public void EnableMovement()
         {
-            canMove = true; // ✅ Se activa cuando el GameManager lo ordene
+            canMove = true; 
         }
 
         private void Move()
         {
-            if (!canMove) return; // 🚫 No deja moverse hasta que se active
+            if (!canMove) return; 
 
             _rb.linearVelocity = new Vector3(_moveDirection.x, _rb.linearVelocity.y, _moveDirection.z);
         }
@@ -71,11 +69,9 @@ namespace Systems.Player
             RaycastHit hit;
             _isGrounded = Physics.Raycast(transform.position, Vector3.down, out hit, raycastLength, groundLayer);
             
-            // Debugging en consola
             Debug.DrawRay(transform.position, Vector3.down * raycastLength, _isGrounded ? Color.green : Color.red);
-            if (_isGrounded) Debug.Log("🟢 En el suelo");
-            else Debug.Log("🔴 En el aire");
+            if (_isGrounded) Debug.Log(" En el suelo");
+            else Debug.Log(" En el aire");
         }
-
     }
 }

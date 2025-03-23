@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 3461821935799543810}
   - component: {fileID: 5227937624465034022}
   - component: {fileID: 6485695139048845794}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player_3
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,9 +150,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6247540711031165037}
     m_Modifications:
+    - target: {fileID: 574223720401025902, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 1246918758467806929, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
       propertyPath: m_Name
       value: RollingBalls_Sci-fi_1_3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1246918758467806929, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4035109334116148654, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -193,6 +201,14 @@ PrefabInstance:
     - target: {fileID: 4035109334116148654, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645664141258863785, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7949894712861823381, guid: d7c5ce0a5be36014689a9a18d764c26e, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

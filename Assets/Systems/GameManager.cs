@@ -51,50 +51,59 @@ public class GameManager : MonoBehaviourPunCallbacks
         countdownText.gameObject.SetActive(false);
         _raceStarted = true;
 
-        EnablePlayerMovement(); // 🚀 Aquí es donde finalmente se activa el movimiento
+        EnablePlayerMovement();
     }
-
 
     private void EnablePlayerMovement()
     {
         Movement[] players = FindObjectsOfType<Movement>();
         foreach (var player in players)
         {
-            player.EnableMovement(); // 🔥 Activa el movimiento de todos los jugadores
+            player.EnableMovement();
         }
     }
 
-
+    [PunRPC]
     public void PlayerFinished(string playerName)
     {
         if (!_raceStarted) return;
-        _playersFinished++;
 
-        if (_playersFinished == 1)
+        if (PhotonNetwork.IsMasterClient)
         {
-            _winner = playerName;
-        }
-        else if (_playersFinished == 2)
-        {
-            DetermineWinner();
+            _playersFinished++;
+            
+
+            if (_playersFinished == 1)
+            {
+                _winner = playerName;
+                Debug.Log($" Primer lugar: {_winner}");
+            }
+
+            if (_playersFinished == 2) // Cuando ambos terminen
+            {
+                photonView.RPC("ShowResults", RpcTarget.All, _winner);
+            }
         }
     }
 
-    private void DetermineWinner()
+    [PunRPC]
+    private void ShowResults(string winner)
     {
-        string localPlayerName = PhotonNetwork.NickName;
-        if (_winner == localPlayerName)
-            ShowResult("¡Ganaste!");
+        if (PhotonNetwork.NickName == winner)
+        {
+            photonView.RPC("DisplayResult", RpcTarget.All, winner, "¡Ganaste!");
+        }
         else
-            ShowResult("Perdiste");
+        {
+            photonView.RPC("DisplayResult", RpcTarget.All, winner, "Perdiste.");
+        }
     }
 
-    private void ShowResult(string message)
+    [PunRPC]
+    private void DisplayResult(string winner, string message)
     {
-        resultPanel.SetActive(true);
         resultText.text = message;
-        restartButton.SetActive(true);
-        menuButton.SetActive(true);
+        resultPanel.SetActive(true);
     }
 
     public void RestartGame()
